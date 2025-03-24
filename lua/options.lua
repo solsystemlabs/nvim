@@ -66,4 +66,30 @@ vim.opt.scrolloff = 10
 -- See `:help 'confirm'`
 vim.opt.confirm = true
 
+-- Set up autoread to reload files changed outside of Neovim
+vim.opt.autoread = true
+
+-- Create an autocommand group for file change detection
+local autoread_group = vim.api.nvim_create_augroup('AutoRead', { clear = true })
+
+-- Set up autocommands to check for file changes when returning to Neovim
+vim.api.nvim_create_autocmd({ 'FocusGained', 'BufEnter', 'CursorHold', 'CursorHoldI' }, {
+  group = autoread_group,
+  pattern = '*',
+  callback = function()
+    if vim.fn.getcmdwintype() == '' then
+      vim.cmd 'checktime'
+    end
+  end,
+})
+
+-- Add notification when a file is changed externally
+vim.api.nvim_create_autocmd('FileChangedShellPost', {
+  group = autoread_group,
+  pattern = '*',
+  callback = function()
+    vim.notify('File changed on disk. Buffer reloaded.', vim.log.levels.WARN)
+  end,
+})
+
 -- vim: ts=2 sts=2 sw=2 et
