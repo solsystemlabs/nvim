@@ -1,7 +1,7 @@
 return {
   {
     'rafikdraoui/jj-diffconflicts',
-    lazy = true,
+    lazy = false,
     cmd = { 'DiffConflicts' },
   },
 }
