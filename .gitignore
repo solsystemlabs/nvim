@@ -1,3 +1,5 @@
+.DS_STORE
+lua/.DS_STORE
 tags
 test.sh
 .luarc.json
